@@ -52,7 +52,7 @@ var buttonClick = function (event) {
     cityList.push(city);
     saveCitiesToStorage(cityList);
     populateList();
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
     console.log(event);
     console.log(userFormEl.value);
     fetch(queryURL)
@@ -80,7 +80,7 @@ var buttonClick2 = function (event){
         return;
     }
         city = userFormEl.value;
-        var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1" + "&appid=" + APIKey;
+        var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1" + "&appid=" + APIKey;
         fetch(queryURL)
         .then(function (response){
             
@@ -97,7 +97,7 @@ var buttonClick2 = function (event){
 }
 // ** five day forecast below
 var fiveDay = function (lat,lon){
-    var fiveDayURL = "http://api.openweathermap.org/data/2.5/forecast?" + "&lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
+    var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?" + "&lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
             fetch(fiveDayURL)
             .then(function (response){
                 response.json().then(function (data){
@@ -159,7 +159,7 @@ function searchAgain(event) {
     console.log(event);
     const searchBox = document.querySelector("#user-form")
     searchBox.value = event.target.firstChild.data;
-    
+
     buttonClick();
     buttonClick2();
 }
