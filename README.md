@@ -49,4 +49,4 @@ Please refer to license in the repo
 https://dukelurkin.github.io/calendar/
 
 ## Image
-![image](./calendarScreenShot.png)
+![image](./weatherscreenshot.pngweatherscreenshot.png)
