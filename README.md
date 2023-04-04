@@ -49,4 +49,4 @@ Please refer to license in the repo
 https://dukelurkin.github.io/WeatherAboveGround
 
 ## Image
-![image](./weatherscreenshot.pngweatherscreenshot.png)
+![image](./weatherscreenshot.png)
