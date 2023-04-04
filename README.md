@@ -46,7 +46,7 @@ Lukas Durkin
 Please refer to license in the repo
 
 ## URL
-https://dukelurkin.github.io/calendar/
+https://dukelurkin.github.io/WeatherAboveGround
 
 ## Image
 ![image](./weatherscreenshot.pngweatherscreenshot.png)
