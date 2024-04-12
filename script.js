@@ -4,6 +4,9 @@ var limit = 1;
 var APIKey = "ca459494e1c9217a3ccae23e08be5c5c";
 var city = "";
 
+            
+           
+
 // the API call: https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 // 5 day link - api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
 // direct geocode - use city name to get lat&long API link below \/\/\/\/
@@ -20,9 +23,10 @@ function readCitiesFromStorage() {
 }
 
 function saveCitiesToStorage(cities) {
-    localStorage.setItem('alreadyThereCities', JSON.stringify(cities));
-    console.log(cities);
-    citySearchHistory.textContent = cities;
+    var lastFiveCities = cities.slice(-5);
+    localStorage.setItem('alreadyThereCities', JSON.stringify(lastFiveCities));
+    console.log(lastFiveCities);
+    citySearchHistory.textContent = lastFiveCities;
 }
 
 function populateList () {
@@ -31,6 +35,8 @@ function populateList () {
         var citySearchHistory = document.createElement('button');
         citySearchHistory.textContent = city;
         citySearchHistory.classList.add('search-hx')
+        // citySearchHistory.classList.add('list-group-item')
+        citySearchHistory.classList.add('list-group-item-action')
         searchedCities.append(citySearchHistory);
     })
 
@@ -58,16 +64,19 @@ var buttonClick = function (event) {
     fetch(queryURL)
     .then(function (response){
         console.log(response);
-        response.json().then(function (data){
+        response.json()
+        .then(function (data){
             console.log(data);
             console.log(`humidity: ${data.main.humidity}`);
-            console.log(`temp: ${data.main.temp}`);
+            var tempFahrenheit = (data.main.temp - 273.15)*1.8+32;
+            tempFahrenheit = tempFahrenheit.toFixed(1);
+            console.log(`temp: ${tempFahrenheit}`);
             console.log(`wind speed: ${data.wind.speed}`);
             var currentWeatherText = `
             Current Weather in ${data.name}
-            temp: ${data.main.temp}
+            temp: ${tempFahrenheit}
             humidity: ${data.main.humidity}
-            wind speed: ${data.wind.speed}
+            wind speed: ${data.wind.speed} mph
             `
             currentWeather.textContent = currentWeatherText;
             addIcon(data.weather[0].icon, currentWeather);
@@ -97,57 +106,45 @@ var buttonClick2 = function (event){
 }
 // ** five day forecast below
 var fiveDay = function (lat,lon){
+    
     var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?" + "&lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
+            
             fetch(fiveDayURL)
-            .then(function (response){
+            .then(function (response){                
                 response.json().then(function (data){
                     console.log(data);
-                    console.log(data.list[0].dt_txt);
-                    var firstDayText = `
-                    ${dayjs(data.list[0].dt_txt).format('MM/DD/YYYY')}
-                    temp: ${data.list[0].main.temp}
-                    humidity: ${data.list[0].main.humidity}
-                    wind speed: ${data.list[0].wind.speed}
-                    `
-                    firstDay.textContent = firstDayText;
-                    addIcon(data.list[0].weather[0].icon, firstDay);
-                    
-                    var secondDayText = `
-                    ${dayjs(data.list[8].dt_txt).format('MM/DD/YYYY')}
-                    temp: ${data.list[8].main.temp}
-                    humidity: ${data.list[8].main.humidity}
-                    wind speed: ${data.list[8].wind.speed}
-                    `
-                    secondDay.textContent = secondDayText;
-                    addIcon(data.list[8].weather[0].icon, secondDay);
-
-                    var thirdDayText = `
-                    ${dayjs(data.list[16].dt_txt).format('MM/DD/YYYY')}
-                    temp: ${data.list[16].main.temp}
-                    humidity: ${data.list[16].main.humidity}
-                    wind speed: ${data.list[16].wind.speed}
-                    `
-                    thirdDay.textContent = thirdDayText;
-                    addIcon(data.list[16].weather[0].icon, thirdDay);
-
-                    var fourthDayText = `
-                    ${dayjs(data.list[24].dt_txt).format('MM/DD/YYYY')}
-                    temp: ${data.list[24].main.temp}
-                    humidity: ${data.list[24].main.humidity}
-                    wind speed: ${data.list[24].wind.speed}
-                    `
-                    fourthDay.textContent = fourthDayText;
-                    addIcon(data.list[24].weather[0].icon, fourthDay);
-
-                    var fifthDayText = `
-                    ${dayjs(data.list[32].dt_txt).format('MM/DD/YYYY')}
-                    temp: ${data.list[32].main.temp}
-                    humidity: ${data.list[32].main.humidity}
-                    wind speed: ${data.list[32].wind.speed}
-                    `
-                    fifthDay.textContent = fifthDayText;
-                    addIcon(data.list[32].weather[0].icon, fifthDay);
-
+                    for (var i = 0; i < 5; i++) {
+                        var dayData = data.list[i * 8]; // Data for every 8th element (for every day)
+                        var tempFahrenheit = ((dayData.main.temp - 273.15) * 1.8 + 32).toFixed(1);
+                        var dayText = `
+                            ${dayjs(dayData.dt_txt).format('MM/DD/YYYY')}
+                            temp: ${tempFahrenheit}°F
+                            humidity: ${dayData.main.humidity}%
+                            wind speed: ${dayData.wind.speed} mph
+                        `;
+                        switch (i) {
+                            case 0:
+                                firstDay.textContent = dayText;
+                                addIcon(dayData.weather[0].icon, firstDay);
+                                break;
+                            case 1:
+                                secondDay.textContent = dayText;
+                                addIcon(dayData.weather[0].icon, secondDay);
+                                break;
+                            case 2:
+                                thirdDay.textContent = dayText;
+                                addIcon(dayData.weather[0].icon, thirdDay);
+                                break;
+                            case 3:
+                                fourthDay.textContent = dayText;
+                                addIcon(dayData.weather[0].icon, fourthDay);
+                                break;
+                            case 4:
+                                fifthDay.textContent = dayText;
+                                addIcon(dayData.weather[0].icon, fifthDay);
+                                break;
+                        }
+                    }
                 })
             }
         )}

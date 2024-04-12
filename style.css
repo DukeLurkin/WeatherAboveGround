@@ -15,6 +15,7 @@ main {
     border: solid;
     padding: 10px;
     margin: 10px;
+    background-color: rgba(176, 94, 0, 0.225);
 }
 /* section {
     border: solid;
@@ -33,13 +34,17 @@ article {
     max-width: 25%;
     margin: 10px 10px 10px 10px;
 }
+#five-day-weather {
+    display: flex;
+    flex-direction: row;
+}
 #search-section {
     max-width: 25%;
 }
 #weather-section {
-    max-width: 70%;
+    max-width: 90%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 #citySearchHistory {
     align-items: center;
@@ -66,7 +71,9 @@ button {
 
  p { 
     align-self: center;
-    max-width: 100%;
+    max-width: 90%;
+    max-height: 77%;
     border: solid;
     padding: 10px;
+    background-color: rgb(0, 170, 255);
 } 
