@@ -71,7 +71,7 @@ button {
 
  p { 
     align-self: center;
-    max-width: 90%;
+    max-width: 10rem;
     max-height: 77%;
     border: solid;
     padding: 10px;
